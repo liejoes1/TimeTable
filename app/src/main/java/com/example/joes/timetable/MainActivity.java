@@ -8,6 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 
 public class MainActivity extends Activity {
 
@@ -19,8 +25,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         NetworkActivity.setContext(getApplicationContext(), this);
+        ParseXML.setContext(getApplicationContext(), this);
         init();
-        NetworkActivity.startDownload();
+        try {
+            ParseXML.ReadFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         ButtonRetry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +52,6 @@ public class MainActivity extends Activity {
 
         ButtonRetry = findViewById(R.id.ButtonRetry);
     }
-
 
 
 }

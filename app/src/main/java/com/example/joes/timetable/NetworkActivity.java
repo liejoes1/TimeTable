@@ -7,6 +7,8 @@ import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 
+import java.io.IOException;
+
 
 /**
  * Created by Joes on 13/3/2018.
@@ -40,6 +42,17 @@ public class NetworkActivity {
                     @Override
                     public void onDownloadComplete() {
                         MainActivity.TextViewDownloadSuccess.setVisibility(View.VISIBLE);
+                        String zipFile = DIRECTORY_PATH + "/TimeTable.zip";
+                        String unzipLocation = DIRECTORY_PATH + "/Timetable/";
+
+                        Decompress decompress = new Decompress(zipFile, unzipLocation);
+                        decompress.unzip();
+
+                        try {
+                            ParseXML.ReadFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
