@@ -2,7 +2,11 @@ package com.example.joes.timetable;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Xml;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -15,16 +19,21 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import fr.arnaudguyon.xmltojsonlib.XmlToJson;
 
 
 /**
@@ -34,6 +43,8 @@ import javax.xml.parsers.ParserConfigurationException;
 public class ParseXML {
     private static Context appContext;
     private static Context mainContext;
+
+    private static final String ns = null;
 
     public static void setContext(Context mappContext, Context mmainContext) {
         appContext = mappContext;
@@ -49,54 +60,55 @@ public class ParseXML {
         File FinalFileNameFile = new File(FileDirectory, FileName);
 
 
-
-        StringBuffer buff = new StringBuffer();
-        BufferedReader reader = new BufferedReader(new FileReader(FinalFileNameFile));
+        FileInputStream  fileInputStream = new FileInputStream(FinalFileNameFile);
+        InputStreamReader isr = new InputStreamReader(fileInputStream);
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
         String line;
-
-
-        while ((line = reader.readLine()) != null) {
-            buff.append(line).append("\n");
+        while ((line = bufferedReader.readLine()) != null) {
+            sb.append(line);
         }
-        reader.close();
-        Log.i("Files", "Filename" + buff);
+        Log.i("Files", "Filename" + sb.toString());
 
-        String FinalXMLString = buff.toString();
+        //After Read XML File, Convert it to JSON
+        fileInputStream = new FileInputStream(FinalFileNameFile);
+        XmlToJson xmlToJson = new XmlToJson.Builder(fileInputStream, null).build();
+
+        fileInputStream.close();
+        String JsonResult = xmlToJson.toString();
+        Log.i("Files", "Filename" + JsonResult);
+
+        File myFile = new File(Utils.getRootDirPath(appContext) + "/Timetable/", "Timetable1.xml");
+
+        FileOutputStream fOut = new FileOutputStream(myFile);
+        OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+        myOutWriter.append(sb.toString());
+        myOutWriter.close();
+        fOut.close();
+
 
         try {
-            XmlPullParserFactory xmlPullParserFactory = XmlPullParserFactory.newInstance();
-            xmlPullParserFactory.setNamespaceAware(true);
-            XmlPullParser xmlPullParser = xmlPullParserFactory.newPullParser();
+            JSONObject jsonObject = new JSONObject(JsonResult);
 
-            xmlPullParser.setInput( new InputStreamReader(new FileInputStream(FinalFileNameFile)));
-            int eventType = xmlPullParser.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_DOCUMENT) {
-                    System.out.println("Start Document");
-                }
-                else if (eventType == XmlPullParser.START_TAG) {
-                    if (xmlPullParser.getName().equals("intake")) {
-                        if (xmlPullParser.getAttributeValue(null, "name").equals("UC2F1708SE")) {
-                            Log.i("TAG ", "Intake Found12");
-                            break;
-                        }
-                    }
+            JSONObject WeekObject = jsonObject.getJSONObject("weekof");
 
+            JSONArray IntakeArray = WeekObject.getJSONArray("intake");
 
+            for (int i = 0; i < IntakeArray.length(); i++) {
+                JSONObject TimeTableObject = IntakeArray.getJSONObject(i);
+                Log.i("TAG", "Intake Found12" + TimeTableObject.getString("name"));
+                if (TimeTableObject.getString("name").equals("UC2F1711TRM")) {
 
                 }
-                eventType = xmlPullParser.next();
             }
-            System.out.println("End document");
 
 
 
-
-
-        } catch (XmlPullParserException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
 
     }
 }
+
