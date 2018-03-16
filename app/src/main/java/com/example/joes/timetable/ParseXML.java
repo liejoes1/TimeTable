@@ -59,19 +59,21 @@ public class ParseXML {
         FileName = FileNameArray[0].getName();
         File FinalFileNameFile = new File(FileDirectory, FileName);
 
+        StringBuilder text = new StringBuilder();
 
-        FileInputStream  fileInputStream = new FileInputStream(FinalFileNameFile);
-        InputStreamReader isr = new InputStreamReader(fileInputStream);
-        BufferedReader bufferedReader = new BufferedReader(isr);
-        StringBuilder sb = new StringBuilder();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(FinalFileNameFile));
         String line;
+
         while ((line = bufferedReader.readLine()) != null) {
-            sb.append(line);
+            text.append(line);
+            text.append("\n");
         }
-        Log.i("Files", "Filename" + sb.toString());
+        bufferedReader.close();
+
+
 
         //After Read XML File, Convert it to JSON
-        fileInputStream = new FileInputStream(FinalFileNameFile);
+        FileInputStream fileInputStream = new FileInputStream(FinalFileNameFile);
         XmlToJson xmlToJson = new XmlToJson.Builder(fileInputStream, null).build();
 
         fileInputStream.close();
@@ -82,7 +84,7 @@ public class ParseXML {
 
         FileOutputStream fOut = new FileOutputStream(myFile);
         OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-        myOutWriter.append(sb.toString());
+        myOutWriter.append(text.toString());
         myOutWriter.close();
         fOut.close();
 
