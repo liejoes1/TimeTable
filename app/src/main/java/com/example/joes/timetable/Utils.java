@@ -16,7 +16,7 @@ import java.util.Locale;
 public final class Utils {
 
     public static List<Timetable> timetableList = new ArrayList<>();
-
+    public static ArrayList<String> ListOfAllIntake = new ArrayList<>();
     private Utils() {
         // no instance
 

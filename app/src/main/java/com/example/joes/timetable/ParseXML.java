@@ -3,6 +3,7 @@ package com.example.joes.timetable;
 import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
+import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -117,7 +118,40 @@ public class ParseXML {
             e.printStackTrace();
         }
 
+    }
 
+    public static void ParseTimeTableList(String JSONText) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(JSONText);
+
+            JSONObject WeekOfObject = jsonObject.getJSONObject("weekof");
+            JSONArray IntakeArray = WeekOfObject.getJSONArray("intake");
+
+
+
+            for (int CurrentIntakeIndex = 0; CurrentIntakeIndex < IntakeArray.length(); CurrentIntakeIndex++) {
+                JSONObject EachIntake = IntakeArray.getJSONObject(CurrentIntakeIndex);
+                Utils.ListOfAllIntake.add(CurrentIntakeIndex, EachIntake.getString("name"));
+
+
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayAdapter<String> getIntakeList(Context context) {
+        String[] addresses = new String[Utils.ListOfAllIntake.size()];
+
+        for (int i= 0; i < Utils.ListOfAllIntake.size(); i++) {
+            addresses[i] = Utils.ListOfAllIntake.get(i);
+            Log.i("LOG", "Parse Result: " + Utils.ListOfAllIntake.get(i));
+        }
+
+        return new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, addresses);
     }
 }
 

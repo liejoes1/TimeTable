@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class MainActivity extends Activity {
 
     public static RecyclerView recyclerView;
     public static TimeTableAdapter mAdapter;
+    public static AutoCompleteTextView autoCompleteTextView;
     private Button ButtonRetry;
 
     public static RelativeLayout RelativeLayoutDownload;
@@ -42,6 +44,7 @@ public class MainActivity extends Activity {
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.rv_timetable);
         RelativeLayoutDownload = (RelativeLayout) findViewById(R.id.RelativeLayoutDownload);
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.TextViewTimeTableList);
     }
 
 

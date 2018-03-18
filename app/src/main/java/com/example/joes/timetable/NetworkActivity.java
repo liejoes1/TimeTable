@@ -28,6 +28,7 @@ import fr.arnaudguyon.xmltojsonlib.XmlToJson;
 
 import static android.view.View.GONE;
 import static com.example.joes.timetable.MainActivity.recyclerView;
+import static com.example.joes.timetable.ParseXML.ParseTimeTableList;
 
 
 /**
@@ -52,6 +53,8 @@ public class NetworkActivity {
     public static void getValue(String jsonString) {
         JSON_STRING = jsonString;
         Log.i("LOG", "JSONTEST" + jsonString);
+        ParseTimeTableList(jsonString);
+        MainActivity.autoCompleteTextView.setAdapter(ParseXML.getIntakeList(appContext));
     }
 
     public static void startDownload() {
