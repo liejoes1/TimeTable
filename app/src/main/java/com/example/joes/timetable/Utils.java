@@ -9,12 +9,17 @@ import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public final class Utils {
 
+    public static List<Timetable> timetableList = new ArrayList<>();
+
     private Utils() {
         // no instance
+
     }
 
     public static String getRootDirPath(Context context) {

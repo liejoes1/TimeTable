@@ -1,6 +1,8 @@
 package com.example.joes.timetable;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.downloader.Error;
@@ -27,7 +29,7 @@ public class NetworkActivity {
 
     public static void startDownload() {
         DIRECTORY_PATH = Utils.getRootDirPath(appContext);
-        MainActivity.TextViewStartDownload.setVisibility(View.VISIBLE);
+
 
         downloadTimeTable();
     }
@@ -41,7 +43,6 @@ public class NetworkActivity {
                 .start(new OnDownloadListener() {
                     @Override
                     public void onDownloadComplete() {
-                        MainActivity.TextViewDownloadSuccess.setVisibility(View.VISIBLE);
                         String zipFile = DIRECTORY_PATH + "/TimeTable.zip";
                         String unzipLocation = DIRECTORY_PATH + "/Timetable/";
 
@@ -57,7 +58,7 @@ public class NetworkActivity {
 
                     @Override
                     public void onError(Error error) {
-                        MainActivity.TextViewDownloadFailed.setVisibility(View.VISIBLE);
+
                     }
                 });
 

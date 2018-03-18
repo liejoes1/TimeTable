@@ -53,40 +53,16 @@ public class ParseXML {
 
     public static void ReadFile() throws IOException {
         File FileDirectory = new File(Utils.getRootDirPath(appContext) + "/Timetable/");
-        String FileName = null;
-        File[] FileNameArray = FileDirectory.listFiles();
-
-        FileName = FileNameArray[0].getName();
-        File FinalFileNameFile = new File(FileDirectory, FileName);
-
-        StringBuilder text = new StringBuilder();
-
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(FinalFileNameFile));
-        String line;
-
-        while ((line = bufferedReader.readLine()) != null) {
-            text.append(line);
-            text.append("\n");
-        }
-        bufferedReader.close();
-
+        File FinalFileNameFile = new File(FileDirectory, FileDirectory.listFiles()[0].getName());
 
 
         //After Read XML File, Convert it to JSON
         FileInputStream fileInputStream = new FileInputStream(FinalFileNameFile);
         XmlToJson xmlToJson = new XmlToJson.Builder(fileInputStream, null).build();
 
-        fileInputStream.close();
         String JsonResult = xmlToJson.toString();
         Log.i("Files", "Filename" + JsonResult);
 
-        File myFile = new File(Utils.getRootDirPath(appContext) + "/Timetable/", "Timetable1.xml");
-
-        FileOutputStream fOut = new FileOutputStream(myFile);
-        OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-        myOutWriter.append(text.toString());
-        myOutWriter.close();
-        fOut.close();
 
 
         try {
@@ -98,8 +74,39 @@ public class ParseXML {
 
             for (int i = 0; i < IntakeArray.length(); i++) {
                 JSONObject TimeTableObject = IntakeArray.getJSONObject(i);
-                Log.i("TAG", "Intake Found12" + TimeTableObject.getString("name"));
-                if (TimeTableObject.getString("name").equals("UC2F1711TRM")) {
+                if (TimeTableObject.getString("name").equals("UC3F1801TC")) {
+                    Log.i("TAG", "Intake Found12" + TimeTableObject.getString("name"));
+
+                    JSONArray TimeTableArray = TimeTableObject.getJSONArray("timetable");
+                    int Total_Timetable = TimeTableArray.length();
+                    Log.i("TAG", "Length: " + Total_Timetable);
+                    for (int a = 0; a < Total_Timetable; a++) {
+                        JSONObject TimeTableIndividualObject = TimeTableArray.getJSONObject(a);
+                        Timetable timeTable = new Timetable();
+                        timeTable.setDate(TimeTableIndividualObject.getString("date"));
+                        timeTable.setTime(TimeTableIndividualObject.getString("time"));
+                        timeTable.setLocation(TimeTableIndividualObject.getString("location"));
+                        timeTable.setClassroom(TimeTableIndividualObject.getString("classroom"));
+                        timeTable.setModule(TimeTableIndividualObject.getString("module"));
+                        timeTable.setLecturer(TimeTableIndividualObject.getString("lecturer"));
+                        Utils.timetableList.add(timeTable);
+
+                    }
+                    for (int c = 0; c < Utils.timetableList.size(); c++) {
+                        String classroom =  Utils.timetableList.get(c).getClassroom();
+                        String date =  Utils.timetableList.get(c).getDate();
+                        String time =  Utils.timetableList.get(c).getTime();
+                        String location =  Utils.timetableList.get(c).getLocation();
+                        String module =  Utils.timetableList.get(c).getModule();
+                        String lecturer =  Utils.timetableList.get(c).getLecturer();
+
+                        Log.i("TAG", "Result Date" + date);
+                        Log.i("TAG", "Result Time" + time);
+                        Log.i("TAG", "Result Location" + location);
+                        Log.i("TAG", "Result Classroom" + classroom);
+                        Log.i("TAG", "Result Module" + module);
+                        Log.i("TAG", "Result Lecturer" + lecturer);
+                    }
 
                 }
             }
