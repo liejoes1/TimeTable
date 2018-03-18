@@ -8,4 +8,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/RelativeLayoutDownload"
+        >
+
+        <TextView
+            android:id="@+id/TextDownload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Downloading Timetable"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif-light"
+            android:textSize="27sp"
+            android:textColor="#3E4A51"
+            android:layout_marginTop="70dp" />
+
+        <ProgressBar
+            android:id="@+id/ProgressBarLoading"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_below="@id/TextDownload"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            />
+
+
+        <TextView
+            android:layout_below="@id/ProgressBarLoading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please wait"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif-light"
+            android:textSize="13sp"
+            android:textColor="#3E4A51"
+            android:layout_marginTop="30dp" />
+    </RelativeLayout>
 </RelativeLayout>

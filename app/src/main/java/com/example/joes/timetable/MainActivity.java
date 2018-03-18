@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -22,9 +23,11 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    public RecyclerView recyclerView;
-    public TimeTableAdapter mAdapter;
+    public static RecyclerView recyclerView;
+    public static TimeTableAdapter mAdapter;
     private Button ButtonRetry;
+
+    public static RelativeLayout RelativeLayoutDownload;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,27 +36,14 @@ public class MainActivity extends Activity {
         NetworkActivity.setContext(getApplicationContext(), this);
         ParseXML.setContext(getApplicationContext(), this);
         init();
-
-
-        try {
-            ParseXML.ReadFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mAdapter = new TimeTableAdapter(this, Utils.timetableList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setHasFixedSize(true);
-
-        recyclerView.setAdapter(mAdapter);
-
-
+        NetworkActivity.startDownload();
     }
 
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.rv_timetable);
-
+        RelativeLayoutDownload = (RelativeLayout) findViewById(R.id.RelativeLayoutDownload);
     }
+
 
 
 
