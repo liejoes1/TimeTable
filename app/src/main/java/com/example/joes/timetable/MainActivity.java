@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NetworkActivity.setContext(getApplicationContext(), this);
+        NetworkActivity.setContext(getApplicationContext());
         ParseXML.setContext(getApplicationContext(), this);
         init();
         NetworkActivity.startDownload();

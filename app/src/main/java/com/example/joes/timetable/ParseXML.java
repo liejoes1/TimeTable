@@ -128,8 +128,6 @@ public class ParseXML {
             JSONObject WeekOfObject = jsonObject.getJSONObject("weekof");
             JSONArray IntakeArray = WeekOfObject.getJSONArray("intake");
 
-
-
             for (int CurrentIntakeIndex = 0; CurrentIntakeIndex < IntakeArray.length(); CurrentIntakeIndex++) {
                 JSONObject EachIntake = IntakeArray.getJSONObject(CurrentIntakeIndex);
                 Utils.ListOfAllIntake.add(CurrentIntakeIndex, EachIntake.getString("name"));

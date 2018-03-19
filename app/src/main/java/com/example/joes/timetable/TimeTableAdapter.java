@@ -13,8 +13,6 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.downloader.OnDownloadListener;
-
 import java.util.List;
 
 /**
