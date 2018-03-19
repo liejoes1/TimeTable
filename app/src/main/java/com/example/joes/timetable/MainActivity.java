@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -32,6 +33,7 @@ public class MainActivity extends Activity {
     public Button SubmitButton;
 
     public static RelativeLayout RelativeLayoutDownload;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,18 +52,16 @@ public class MainActivity extends Activity {
                     if (autoCompleteTextView.getText().toString().equals(Utils.ListOfAllIntake.get(i))) {
                         Log.i("IntakeResult", "Result: " + autoCompleteTextView.getText().toString());
                         new NetworkActivity.GetTimeTableInfoAsyncTask().execute(autoCompleteTextView.getText().toString());
-                    }
-                    else {
-                        Log.i("IntakeResult", "Result: " + autoCompleteTextView.getText().toString());
-
+                        return;
                     }
                 }
-
-
+                Log.i("IntakeResult", "Result: " + autoCompleteTextView.getText().toString());
+                Toast.makeText(getApplicationContext(), "Please Select from the Provided", Toast.LENGTH_SHORT).show();
             }
+
+
         });
     }
-
 
 
     private void init() {
@@ -70,9 +70,6 @@ public class MainActivity extends Activity {
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.TextViewTimeTableList);
         SubmitButton = (Button) findViewById(R.id.SubmitButton);
     }
-
-
-
 
 
 }

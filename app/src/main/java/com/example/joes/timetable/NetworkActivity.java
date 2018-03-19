@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +46,7 @@ public class NetworkActivity {
     private static String ROOT_DIRECTORY_PATH;
     private static String ROOT_TEMP_PATH;
 
-    private static final String TIMETABLE_LIST_URL = "https://lms.apiit.edu.my/intake-timetable/TimetableIntakeList/TimetableIntakeList.xml";
+    private static final String TIMETABLE_LIST_URL = "UC";
     private static String TIMETABLE_INFO_BASE = "https://webspace.apiit.edu.my/intake-timetable/replyLink.php?stid=";
 
 
@@ -78,11 +80,11 @@ public class NetworkActivity {
         protected Void doInBackground(Void... voids) {
             URL url = null;
             try {
-
                 url = new URL(TIMETABLE_LIST_URL);
+                HttpURLConnection httpURLConnection = getNetworkData(url);
                 FileOutputStream fileOutputStream = new FileOutputStream(TempFile);
-                InputStream inputStream = getNetworkData(url).getInputStream();
-                int lenghtOfFile = getNetworkData(url).getContentLength();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                int lenghtOfFile = httpURLConnection.getContentLength();
 
                 byte data[] = new byte[1024];
                 int count = 0;
@@ -132,15 +134,16 @@ public class NetworkActivity {
         }
     }
 
-    public static class GetTimeTableInfoAsyncTask extends AsyncTask<String, Void, Void> {
+    public static class GetTimeTableInfoAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
-        protected Void doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
+            String fullString = "";
             try {
                 URL url = new URL(TIMETABLE_INFO_BASE + strings[0]);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
                 String str;
-                String fullString = "";
+
                 while ((str = bufferedReader.readLine()) != null) {
                     fullString += str;
                 }
@@ -149,7 +152,78 @@ public class NetworkActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return fullString;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (!s.equals("Time table for the current week is not available for this intake code.")) {
+                new GetTimeTableDataAsyncTask().execute(s);
+            }
+        }
+    }
+
+    private static class GetTimeTableDataAsyncTask extends AsyncTask<String, Void, Void> {
+
+        File TempFile = new File(ROOT_TEMP_PATH, "TimeTableTemporary.zip");
+        @Override
+        protected Void doInBackground(String... strings) {
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection httpURLConnection = getNetworkData(url);
+
+                FileOutputStream fileOutputStream = new FileOutputStream(TempFile);
+                InputStream inputStream = httpURLConnection.getInputStream();
+                int lenghtOfFile = httpURLConnection.getContentLength();
+
+                byte data[] = new byte[1024];
+                int count = 0;
+                long total = 0;
+                int progress = 0;
+                while ((count = inputStream.read(data)) != -1) {
+                    total += count;
+                    int progress_temp = (int) total * 100 / lenghtOfFile;
+                    if (progress_temp % 10 == 0 && progress != progress_temp) {
+                        progress = progress_temp;
+                    }
+                    fileOutputStream.write(data, 0, count);
+                }
+                inputStream.close();
+                fileOutputStream.close();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            String zipFile = TempFile.toString();
+            String unzipFile = ROOT_TEMP_PATH + "/TimeTableTemporary/";
+            Decompress decompress = new Decompress(zipFile, unzipFile);
+            decompress.unzip();
+            File NewFile = new File(ROOT_DIRECTORY_PATH, "TimeTable.xml");
+            //Copy File from TEMP Folder to ROOT Folder
+            try {
+                InputStream inputStream = new FileInputStream(unzipFile + "timetable.xml");
+                OutputStream outputStream = new FileOutputStream(NewFile);
+
+                byte[] bytes = new byte[1024];
+                int lengthOfFile;
+                while ((lengthOfFile = inputStream.read(bytes)) > 0) {
+                    outputStream.write(bytes, 0, lengthOfFile);
+                }
+                inputStream.close();
+                outputStream.close();
+                Toast.makeText(appContext, "Done Successfully", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
