@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
@@ -10,100 +10,214 @@
         android:visibility="gone" />
 
 
-    <RelativeLayout
-        android:id="@+id/RelativeLayoutDownload"
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_splash_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:background="@android:color/white"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/ContainerText"
+        <TextView
+            android:layout_marginTop="100dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/TextProcessingTimeTableList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
-                android:fontFamily="sans-serif-light"
-                android:text="Processing Timetable List"
-                android:textAlignment="center"
-                android:textColor="#3E4A51"
-                android:textSize="27sp"
-                android:visibility="visible" />
-
-            <TextView
-                android:id="@+id/TextProcessingTimeTable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
-                android:fontFamily="sans-serif-light"
-                android:text="Processing Timetable"
-                android:textAlignment="center"
-                android:textColor="#3E4A51"
-                android:textSize="27sp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/UnzippingTimeTable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
-                android:fontFamily="sans-serif-light"
-                android:text="Unzipping Timetable"
-                android:textAlignment="center"
-                android:textColor="#3E4A51"
-                android:textSize="27sp"
-                android:visibility="gone" />
-
-        </LinearLayout>
-
-
-        <ProgressBar
-            android:id="@+id/ProgressBarLoading"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_below="@id/ContainerText"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp" />
-
+            android:text="TimeTable"
+            android:textAlignment="center"
+            android:textColor="#3E4A51"
+            android:textSize="40sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ProgressBarLoading"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:fontFamily="sans-serif-light"
-            android:text="Please wait"
+            android:text="loading..."
             android:textAlignment="center"
             android:textColor="#3E4A51"
-            android:textSize="13sp" />
+            android:textSize="17sp" />
 
+    </LinearLayout>
 
-    </RelativeLayout>
-
-    <LinearLayout
+    <RelativeLayout
         android:visibility="gone"
-        android:id="@+id/EnterIntake"
+        android:id="@+id/rl_intake_screen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="Welcome, Please enter your intake code"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
 
         <AutoCompleteTextView
             android:id="@+id/TextViewTimeTableList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="20dp"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textCursorDrawable="@drawable/cursor_color" />
 
-        <Button
-            android:id="@+id/SubmitButton"
+
+        <TextView
+            android:id="@+id/tv_continue_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/TextViewTimeTableList"
-            android:text="Submit" />
+            android:layout_marginTop="80dp"
+            android:text="Continue"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_intake_screen_error_choice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#1C2124"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="Welcome, Please enter your intake code"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/border_shadow"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textError1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Please select from the choice above"
+                android:textAlignment="center"
+                android:textColor="#3E4A51" />
+
+            <TextView
+                android:id="@+id/tv_OK_button_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textError1"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="OK"
+                android:textAlignment="center"
+
+                android:textColor="#3E4A51" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_intake_screen_error_invalid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#1C2124"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="Welcome, Please enter your intake code"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/border_shadow"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textError2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Sorry, Your Intake is not supported \nPlease visit webpace"
+                android:textAlignment="center"
+                android:textColor="#3E4A51" />
+
+            <TextView
+                android:id="@+id/tv_OK_button_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textError2"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="OK"
+                android:textAlignment="center"
+
+                android:textColor="#3E4A51" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_loading_screen"
+        android:orientation="vertical"
+        android:background="#3E4A51"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_marginTop="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-light"
+            android:text="loading..."
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="17sp" />
+
     </LinearLayout>
-
-
 </RelativeLayout>

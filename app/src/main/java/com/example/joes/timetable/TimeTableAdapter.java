@@ -52,7 +52,9 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.Time
         holder.DateTextView.setText(timetable.getDate());
         holder.TitleTextView.setText(timetable.getModule());
         holder.RoomTextView.setText(timetable.getLocation());
-        holder.LocationTextView.setText(timetable.getLocation());
+        String StartTime = timetable.getStartTime().substring(11,16);
+        String EndTime = timetable.getEndTime().substring(11,16);
+        holder.time.setText(StartTime + " - " + EndTime);
     }
 
     @Override
@@ -62,7 +64,8 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.Time
 
     class TimeTableHolder extends RecyclerView.ViewHolder {
 
-        TextView DateTextView, TitleTextView, RoomTextView, LocationTextView;
+        TextView DateTextView, TitleTextView, RoomTextView, LocationTextView, time;
+
 
         public TimeTableHolder(View itemView) {
             super(itemView);
@@ -70,7 +73,7 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.Time
             DateTextView = itemView.findViewById(R.id.date);
             TitleTextView = itemView.findViewById(R.id.course_title);
             RoomTextView = itemView.findViewById(R.id.course_room);
-            LocationTextView = itemView.findViewById(R.id.course_locaton);
+            time = itemView.findViewById(R.id.time);
         }
     }
 

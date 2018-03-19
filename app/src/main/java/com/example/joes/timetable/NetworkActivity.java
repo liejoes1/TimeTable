@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -47,6 +48,7 @@ public class NetworkActivity {
     private static String ROOT_DIRECTORY_PATH;
     private static String ROOT_TEMP_PATH;
 
+
     private static final String TIMETABLE_LIST_URL = "https://webspace.apiit.edu.my/intake-timetable/TimetableIntakeList/TimetableIntakeList.xml";
     private static String TIMETABLE_INFO_BASE = "https://webspace.apiit.edu.my/intake-timetable/replyLink.php?stid=";
 
@@ -73,8 +75,7 @@ public class NetworkActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            MainActivity.TextProcessingTimeTableList.setVisibility(View.VISIBLE);
-            MainActivity.RelativeLayoutDownload.setVisibility(View.VISIBLE);
+            MainActivity.SplashScreenLinearLayout.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -112,9 +113,9 @@ public class NetworkActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            MainActivity.RelativeLayoutDownload.setVisibility(GONE);
-            MainActivity.EnterIntake.setVisibility(View.VISIBLE);
-            MainActivity.TextProcessingTimeTableList.setVisibility(View.GONE);
+            MainActivity.SplashScreenLinearLayout.setVisibility(View.GONE);
+            MainActivity.IntakeScreenRelativeLayout.setVisibility(View.VISIBLE);
+
             File NewFile = new File(ROOT_DIRECTORY_PATH, "TimeTableList.xml");
             System.out.println("New File: " + ROOT_DIRECTORY_PATH);
             //Copy File from TEMP Folder to ROOT Folder
@@ -142,9 +143,6 @@ public class NetworkActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            MainActivity.EnterIntake.setVisibility(View.GONE);
-            MainActivity.TextProcessingTimeTable.setVisibility(View.VISIBLE);
-            MainActivity.RelativeLayoutDownload.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -172,8 +170,7 @@ public class NetworkActivity {
             if (!s.equals("Time table for the current week is not available for this intake code.")) {
                 new GetTimeTableDataAsyncTask().execute(s);
             } else {
-                MainActivity.RelativeLayoutDownload.setVisibility(GONE);
-                MainActivity.EnterIntake.setVisibility(View.VISIBLE);
+                MainActivity.IntakeScreenErrorInvalidRelativeLayout.setVisibility(View.VISIBLE);
                 Toast.makeText(appContext, "You don't have class for this week", Toast.LENGTH_SHORT).show();
             }
         }
@@ -184,8 +181,8 @@ public class NetworkActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            MainActivity.TextProcessingTimeTable.setVisibility(GONE);
-            MainActivity.UnzippingTimeTable.setVisibility(View.VISIBLE);
+            MainActivity.IntakeScreenRelativeLayout.setVisibility(GONE);
+            MainActivity.LoadingScreenLinearLayout.setVisibility(View.VISIBLE);
         }
 
         File TempFile = new File(ROOT_TEMP_PATH, "TimeTableTemporary.zip");
@@ -241,7 +238,7 @@ public class NetworkActivity {
                 }
                 inputStream.close();
                 outputStream.close();
-                MainActivity.RelativeLayoutDownload.setVisibility(View.GONE);
+                MainActivity.LoadingScreenLinearLayout.setVisibility(View.GONE);
                 MainActivity.recyclerView.setVisibility(View.VISIBLE);
                 ParseXML.ParseTimeTable(new FileInputStream(NewFile));
                 Toast.makeText(appContext, "Done Successfully", Toast.LENGTH_SHORT).show();

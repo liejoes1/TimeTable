@@ -33,11 +33,11 @@ public class MainActivity extends Activity {
     public static RecyclerView recyclerView;
     public static TimeTableAdapter mAdapter;
     public static AutoCompleteTextView autoCompleteTextView;
-    public Button SubmitButton;
-    public static TextView TextProcessingTimeTableList, TextProcessingTimeTable, UnzippingTimeTable;
-    public static LinearLayout EnterIntake;
 
-    public static RelativeLayout RelativeLayoutDownload;
+    public static LinearLayout SplashScreenLinearLayout, LoadingScreenLinearLayout;
+    public static RelativeLayout IntakeScreenRelativeLayout, IntakeScreenErrorChoiceRelativeLayout, IntakeScreenErrorInvalidRelativeLayout;
+
+    public static TextView ContinueButtonTextView, OKButton1TextView, OKButton2TextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
         NetworkActivity.startDownload();
 
 
-        SubmitButton.setOnClickListener(new View.OnClickListener() {
+        ContinueButtonTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 for (int i = 0; i < Utils.ListOfAllIntake.size(); i++) {
@@ -62,11 +62,28 @@ public class MainActivity extends Activity {
                     }
                 }
                 Log.i("IntakeResult", "Result: " + autoCompleteTextView.getText().toString());
-                Toast.makeText(getApplicationContext(), "Please Select from the Provided", Toast.LENGTH_SHORT).show();
+                IntakeScreenErrorChoiceRelativeLayout.setVisibility(View.VISIBLE);
             }
 
 
         });
+
+        OKButton1TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IntakeScreenErrorChoiceRelativeLayout.setVisibility(View.GONE);
+                IntakeScreenRelativeLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        OKButton2TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IntakeScreenErrorInvalidRelativeLayout.setVisibility(View.GONE);
+                IntakeScreenRelativeLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
         mAdapter = new TimeTableAdapter(this, Utils.timetableList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -88,13 +105,18 @@ public class MainActivity extends Activity {
 
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.rv_timetable);
-        RelativeLayoutDownload = (RelativeLayout) findViewById(R.id.RelativeLayoutDownload);
+        SplashScreenLinearLayout = (LinearLayout) findViewById(R.id.ll_splash_screen);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.TextViewTimeTableList);
-        SubmitButton = (Button) findViewById(R.id.SubmitButton);
-        TextProcessingTimeTableList = (TextView) findViewById(R.id.TextProcessingTimeTableList);
-        TextProcessingTimeTable = (TextView) findViewById(R.id.TextProcessingTimeTable);
-        EnterIntake = (LinearLayout) findViewById(R.id.EnterIntake);
-        UnzippingTimeTable = (TextView) findViewById(R.id.UnzippingTimeTable);
+        IntakeScreenRelativeLayout = (RelativeLayout) findViewById(R.id.rl_intake_screen);
+        ContinueButtonTextView = (TextView) findViewById(R.id.tv_continue_button);
+        IntakeScreenErrorChoiceRelativeLayout = (RelativeLayout) findViewById(R.id.rl_intake_screen_error_choice);
+
+        OKButton1TextView = (TextView) findViewById(R.id.tv_OK_button_1);
+
+        IntakeScreenErrorInvalidRelativeLayout = (RelativeLayout) findViewById(R.id.rl_intake_screen_error_invalid);
+        OKButton2TextView = (TextView) findViewById(R.id.tv_OK_button_2);
+
+        LoadingScreenLinearLayout = (LinearLayout) findViewById(R.id.ll_loading_screen);
     }
 
 
