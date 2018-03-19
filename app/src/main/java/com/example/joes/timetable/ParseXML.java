@@ -65,7 +65,6 @@ public class ParseXML {
         Log.i("Files", "Filename" + JsonResult);
 
 
-
         try {
             JSONObject jsonObject = new JSONObject(JsonResult);
 
@@ -94,12 +93,12 @@ public class ParseXML {
 
                     }
                     for (int c = 0; c < Utils.timetableList.size(); c++) {
-                        String classroom =  Utils.timetableList.get(c).getClassroom();
-                        String date =  Utils.timetableList.get(c).getDate();
-                        String time =  Utils.timetableList.get(c).getTime();
-                        String location =  Utils.timetableList.get(c).getLocation();
-                        String module =  Utils.timetableList.get(c).getModule();
-                        String lecturer =  Utils.timetableList.get(c).getLecturer();
+                        String classroom = Utils.timetableList.get(c).getClassroom();
+                        String date = Utils.timetableList.get(c).getDate();
+                        String time = Utils.timetableList.get(c).getTime();
+                        String location = Utils.timetableList.get(c).getLocation();
+                        String module = Utils.timetableList.get(c).getModule();
+                        String lecturer = Utils.timetableList.get(c).getLecturer();
 
                         Log.i("TAG", "Result Date" + date);
                         Log.i("TAG", "Result Time" + time);
@@ -113,27 +112,22 @@ public class ParseXML {
             }
 
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
-    public static void ParseTimeTableList(String JSONText) {
-
+    public static void ParseTimeTableList(FileInputStream xmlFileName) {
         try {
-            JSONObject jsonObject = new JSONObject(JSONText);
-
-            JSONObject WeekOfObject = jsonObject.getJSONObject("weekof");
+            XmlToJson xmlToJson = new XmlToJson.Builder(xmlFileName, null).build();
+            JSONObject RootObject = new JSONObject(xmlToJson.toString());
+            JSONObject WeekOfObject = RootObject.getJSONObject("weekof");
             JSONArray IntakeArray = WeekOfObject.getJSONArray("intake");
 
             for (int CurrentIntakeIndex = 0; CurrentIntakeIndex < IntakeArray.length(); CurrentIntakeIndex++) {
                 JSONObject EachIntake = IntakeArray.getJSONObject(CurrentIntakeIndex);
                 Utils.ListOfAllIntake.add(CurrentIntakeIndex, EachIntake.getString("name"));
-
-
-
             }
 
         } catch (JSONException e) {
@@ -144,7 +138,7 @@ public class ParseXML {
     public static ArrayAdapter<String> getIntakeList(Context context) {
         String[] addresses = new String[Utils.ListOfAllIntake.size()];
 
-        for (int i= 0; i < Utils.ListOfAllIntake.size(); i++) {
+        for (int i = 0; i < Utils.ListOfAllIntake.size(); i++) {
             addresses[i] = Utils.ListOfAllIntake.get(i);
             Log.i("LOG", "Parse Result: " + Utils.ListOfAllIntake.get(i));
         }

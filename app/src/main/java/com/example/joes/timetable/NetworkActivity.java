@@ -48,21 +48,10 @@ public class NetworkActivity {
     private static String TIMETABLE_INFO_BASE = "https://webspace.apiit.edu.my/intake-timetable/replyLink.php?stid=";
 
 
-
-    private static String JSON_STRING;
-
     public static void setContext(Context mappContext) {
         appContext = mappContext;
     }
 
-
-
-    public static void getValue(String jsonString) {
-        JSON_STRING = jsonString;
-        Log.i("LOG", "JSONTEST" + jsonString);
-        ParseTimeTableList(jsonString);
-        MainActivity.autoCompleteTextView.setAdapter(ParseXML.getIntakeList(appContext));
-    }
 
     public static void startDownload() {
         ROOT_DIRECTORY_PATH = Utils.getRootDirPath(appContext);
@@ -73,7 +62,6 @@ public class NetworkActivity {
         ROOT_TEMP_PATH = TempDir.toString();
         MainActivity.RelativeLayoutDownload.setVisibility(View.VISIBLE);
         new GetTimeTableListAsyncTask().execute();
-
     }
 
 
@@ -122,8 +110,9 @@ public class NetworkActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             MainActivity.RelativeLayoutDownload.setVisibility(GONE);
-            File NewFile = new File(ROOT_DIRECTORY_PATH, "TimeTableList.xml"); //New File
+            File NewFile = new File(ROOT_DIRECTORY_PATH, "TimeTableList.xml");
             System.out.println("New File: " + ROOT_DIRECTORY_PATH);
+            //Copy File from TEMP Folder to ROOT Folder
             try {
                 InputStream inputStream = new FileInputStream(TempFile);
                 OutputStream outputStream = new FileOutputStream(NewFile);
@@ -135,10 +124,32 @@ public class NetworkActivity {
                 }
                 inputStream.close();
                 outputStream.close();
-
+                ParseXML.ParseTimeTableList(new FileInputStream(NewFile));
+                MainActivity.autoCompleteTextView.setAdapter(ParseXML.getIntakeList(appContext));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static class GetTimeTableInfoAsyncTask extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            try {
+                URL url = new URL(TIMETABLE_INFO_BASE + strings[0]);
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+                String str;
+                String fullString = "";
+                while ((str = bufferedReader.readLine()) != null) {
+                    fullString += str;
+                }
+                bufferedReader.close();
+                Log.i("LOG", "Timetable Info: " + fullString);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 
