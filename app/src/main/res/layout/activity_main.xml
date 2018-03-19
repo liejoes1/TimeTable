@@ -1,69 +1,109 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
 
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/rv_timetable"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 
     <RelativeLayout
-        android:visibility="gone"
+        android:id="@+id/RelativeLayoutDownload"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/RelativeLayoutDownload"
-        >
+        android:visibility="visible">
 
-        <TextView
-            android:id="@+id/TextDownload"
+        <LinearLayout
+            android:id="@+id/ContainerText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Downloading Timetable"
-            android:textAlignment="center"
-            android:fontFamily="sans-serif-light"
-            android:textSize="27sp"
-            android:textColor="#3E4A51"
-            android:layout_marginTop="70dp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TextProcessingTimeTableList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Processing Timetable List"
+                android:textAlignment="center"
+                android:textColor="#3E4A51"
+                android:textSize="27sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/TextProcessingTimeTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Processing Timetable"
+                android:textAlignment="center"
+                android:textColor="#3E4A51"
+                android:textSize="27sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/UnzippingTimeTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Unzipping Timetable"
+                android:textAlignment="center"
+                android:textColor="#3E4A51"
+                android:textSize="27sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
 
         <ProgressBar
             android:id="@+id/ProgressBarLoading"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_below="@id/TextDownload"
-            android:layout_marginTop="10dp"
+            android:layout_below="@id/ContainerText"
             android:layout_centerHorizontal="true"
-            />
+            android:layout_marginTop="10dp" />
 
 
         <TextView
-            android:layout_below="@id/ProgressBarLoading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/ProgressBarLoading"
+            android:layout_marginTop="30dp"
+            android:fontFamily="sans-serif-light"
             android:text="Please wait"
             android:textAlignment="center"
-            android:fontFamily="sans-serif-light"
-            android:textSize="13sp"
             android:textColor="#3E4A51"
-            android:layout_marginTop="30dp" />
+            android:textSize="13sp" />
 
 
     </RelativeLayout>
-    <AutoCompleteTextView
-        android:id="@+id/TextViewTimeTableList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-    <Button
-        android:layout_below="@id/TextViewTimeTableList"
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/EnterIntake"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/SubmitButton"
-        />
+        android:orientation="vertical">
+
+        <AutoCompleteTextView
+            android:id="@+id/TextViewTimeTableList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/SubmitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TextViewTimeTableList"
+            android:text="Submit" />
+    </LinearLayout>
 
 
 </RelativeLayout>

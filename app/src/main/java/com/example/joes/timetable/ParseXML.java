@@ -52,71 +52,6 @@ public class ParseXML {
         mainContext = mmainContext;
     }
 
-    public static void ReadFile() throws IOException {
-        File FileDirectory = new File(Utils.getRootDirPath(appContext) + "/Timetable/");
-        File FinalFileNameFile = new File(FileDirectory, FileDirectory.listFiles()[0].getName());
-
-
-        //After Read XML File, Convert it to JSON
-        FileInputStream fileInputStream = new FileInputStream(FinalFileNameFile);
-        XmlToJson xmlToJson = new XmlToJson.Builder(fileInputStream, null).build();
-
-        String JsonResult = xmlToJson.toString();
-        Log.i("Files", "Filename" + JsonResult);
-
-
-        try {
-            JSONObject jsonObject = new JSONObject(JsonResult);
-
-            JSONObject WeekObject = jsonObject.getJSONObject("weekof");
-
-            JSONArray IntakeArray = WeekObject.getJSONArray("intake");
-
-            for (int i = 0; i < IntakeArray.length(); i++) {
-                JSONObject TimeTableObject = IntakeArray.getJSONObject(i);
-                if (TimeTableObject.getString("name").equals("UC3F1801TC")) {
-                    Log.i("TAG", "Intake Found12" + TimeTableObject.getString("name"));
-
-                    JSONArray TimeTableArray = TimeTableObject.getJSONArray("timetable");
-                    int Total_Timetable = TimeTableArray.length();
-                    Log.i("TAG", "Length: " + Total_Timetable);
-                    for (int a = 0; a < Total_Timetable; a++) {
-                        JSONObject TimeTableIndividualObject = TimeTableArray.getJSONObject(a);
-                        Timetable timeTable = new Timetable();
-                        timeTable.setDate(TimeTableIndividualObject.getString("date"));
-                        timeTable.setTime(TimeTableIndividualObject.getString("time"));
-                        timeTable.setLocation(TimeTableIndividualObject.getString("location"));
-                        timeTable.setClassroom(TimeTableIndividualObject.getString("classroom"));
-                        timeTable.setModule(TimeTableIndividualObject.getString("module"));
-                        timeTable.setLecturer(TimeTableIndividualObject.getString("lecturer"));
-                        Utils.timetableList.add(timeTable);
-
-                    }
-                    for (int c = 0; c < Utils.timetableList.size(); c++) {
-                        String classroom = Utils.timetableList.get(c).getClassroom();
-                        String date = Utils.timetableList.get(c).getDate();
-                        String time = Utils.timetableList.get(c).getTime();
-                        String location = Utils.timetableList.get(c).getLocation();
-                        String module = Utils.timetableList.get(c).getModule();
-                        String lecturer = Utils.timetableList.get(c).getLecturer();
-
-                        Log.i("TAG", "Result Date" + date);
-                        Log.i("TAG", "Result Time" + time);
-                        Log.i("TAG", "Result Location" + location);
-                        Log.i("TAG", "Result Classroom" + classroom);
-                        Log.i("TAG", "Result Module" + module);
-                        Log.i("TAG", "Result Lecturer" + lecturer);
-                    }
-
-                }
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public static void ParseTimeTableList(FileInputStream xmlFileName) {
         try {
@@ -133,6 +68,44 @@ public class ParseXML {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void ParseTimeTable(FileInputStream xmlFileName) {
+        XmlToJson xmlToJson = new XmlToJson.Builder(xmlFileName, null).build();
+
+        try {
+            JSONObject RootObject = new JSONObject(xmlToJson.toString());
+            JSONObject WeekObject = RootObject.getJSONObject("week");
+            JSONArray DayArray = WeekObject.getJSONArray("day");
+            Log.i("LOG", "Parse Timetable: " + DayArray);
+
+            for (int DayIndex = 0; DayIndex < DayArray.length(); DayIndex++) {
+                JSONObject DailyObject = DayArray.getJSONObject(DayIndex);
+                JSONArray ClassArray = DailyObject.getJSONArray("class");
+                for (int DailyArrayIndex = 0; DailyArrayIndex < ClassArray.length(); DailyArrayIndex++) {
+                    JSONObject SubjectObject = ClassArray.getJSONObject(DailyArrayIndex);
+                    String Module = SubjectObject.getString("subject");
+                    String Classroom = SubjectObject.getString("location");
+                    String StartTime = SubjectObject.getString("start");
+                    String EndTime = SubjectObject.getString("end");
+                    String Date = StartTime.substring(0, 10);
+
+                    Utils.timetableList.add(new Timetable(Date, StartTime, EndTime, Classroom, Module));
+                }
+            }
+
+            for (int i = 0; i < Utils.timetableList.size(); i++) {
+                Log.i("TAG", "Module: " + Utils.timetableList.get(i).getModule());
+                Log.i("TAG", "Classroom: " + Utils.timetableList.get(i).getLocation());
+                Log.i("TAG", "Start Time: " + Utils.timetableList.get(i).getStartTime());
+                Log.i("TAG", "End Time: " + Utils.timetableList.get(i).getEndTime());
+                Log.i("TAG", "Date: " + Utils.timetableList.get(i).getDate());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static ArrayAdapter<String> getIntakeList(Context context) {

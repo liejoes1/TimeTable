@@ -44,7 +44,7 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.Time
 
         holder.DateTextView.setText(timetable.getDate());
         holder.TitleTextView.setText(timetable.getModule());
-        holder.RoomTextView.setText(timetable.getClassroom());
+        holder.RoomTextView.setText(timetable.getLocation());
         holder.LocationTextView.setText(timetable.getLocation());
     }
 
