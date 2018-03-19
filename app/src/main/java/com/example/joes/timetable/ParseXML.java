@@ -94,13 +94,7 @@ public class ParseXML {
                 }
             }
 
-            for (int i = 0; i < Utils.timetableList.size(); i++) {
-                Log.i("TAG", "Module: " + Utils.timetableList.get(i).getModule());
-                Log.i("TAG", "Classroom: " + Utils.timetableList.get(i).getLocation());
-                Log.i("TAG", "Start Time: " + Utils.timetableList.get(i).getStartTime());
-                Log.i("TAG", "End Time: " + Utils.timetableList.get(i).getEndTime());
-                Log.i("TAG", "Date: " + Utils.timetableList.get(i).getDate());
-            }
+
 
         } catch (JSONException e) {
             e.printStackTrace();

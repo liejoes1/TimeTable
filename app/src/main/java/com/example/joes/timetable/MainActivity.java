@@ -67,6 +67,12 @@ public class MainActivity extends Activity {
 
 
         });
+        mAdapter = new TimeTableAdapter(this, Utils.timetableList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(mAdapter);
+
 
 
     }

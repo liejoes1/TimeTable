@@ -32,6 +32,7 @@ import fr.arnaudguyon.xmltojsonlib.XmlToJson;
 import static android.view.View.GONE;
 
 import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+import static com.example.joes.timetable.MainActivity.recyclerView;
 import static com.example.joes.timetable.ParseXML.ParseTimeTableList;
 
 
@@ -244,6 +245,7 @@ public class NetworkActivity {
                 MainActivity.recyclerView.setVisibility(View.VISIBLE);
                 ParseXML.ParseTimeTable(new FileInputStream(NewFile));
                 Toast.makeText(appContext, "Done Successfully", Toast.LENGTH_SHORT).show();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
